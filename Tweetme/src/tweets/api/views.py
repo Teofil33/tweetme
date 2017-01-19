@@ -28,7 +28,8 @@ class RetweetAPIView(APIView):
         message = "Not allowed"
         if tweet_qs.exists() and tweet_qs.count() == 1:
             #if request.user.is_authenticated():
-            new_tweet = Tweet.objects.like_toggle(request.user, tweet_qs.first())
+            new_tweet = Tweet.objects.retweet(request.user, tweet_qs.first())
+            #new_tweet = Tweet.objects.like_toggle(request.user, tweet_qs.first())
             if new_tweet is not None:
                 data = TweetModelSerializer(new_tweet).data
                 return Response(data)
@@ -51,7 +52,11 @@ class TweetDetailAPIView(generics.ListAPIView):
     def get_queryset(self, *args, **kwargs):
         tweet_id = self.kwargs.get("pk")
         qs = Tweet.objects.filter(pk=tweet_id)
-        return qs
+        if qs.exists() and qs.count() == 1:
+            parent_obj = qs.first()
+            qs1 = parent_obj.get_children()
+            qs = (qs | qs1).distinct().extra({"parent_id_null": 'parent_id IS NULL'})
+        return qs.order_by("-parent_id_null", "-timestamp")
       
 
 
