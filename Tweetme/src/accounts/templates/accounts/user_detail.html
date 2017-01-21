@@ -1,6 +1,5 @@
-
 {% extends "base.html" %}
-
+{% load recommended %}
 
 {% block script %}
 <script>
@@ -40,6 +39,17 @@ $(document).ready(function(){
                {% empty %}
                <h4>Not followed by any users</h4>
                {% endfor %}
+            <hr/>   
+            <h3>Recommended</h3>
+               {% for profile in recommended %}
+               <a href='/{{ profile.user.username }}'>{{ profile.user.username }}</a><br/>
+               {% empty %}
+               <h4>Not followed by any users</h4>
+               {% endfor %}
+            <hr/>
+            <h4>Recommended</h4>
+            {% recommended request.user %}
+            <hr/>      
       </div>
 
 

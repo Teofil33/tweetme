@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load recommended %}
 
 <style>
 #tweet-container {
@@ -15,20 +14,18 @@ $(document).ready(function(){
 </script>
 {% endblock script %}
 
-
-
 {% block content %}
 
    <div class="col-sm-8 col-sm-offset-2">
       <div class='row'>
-          <div class='col-sm-3 col-xs-12' style="background-color: rgba(128, 18 ,177, 0.2); border-radius: 15px; color: white;">
-          <h3>{{ request.user }}</h3>
-          <hr/>
-          <p style="font-size: 1.2em; margin-bottom: 5px;" class='lead'>Recommended Users</p>
-          {% recommended request.user %}
-          <hr/>
+          <div class='col-sm-12'>
+            {% if request.GET.q %}
+            <p class='lead'>Results for {{ request.GET.q }}</p>
+            {% endif %}
+            <hr/>
           </div>
           <div class='col-sm-9 '>
+            <h3>Tweets</h3>
                {% if not request.GET.q %}
                   <div class=''>
                       
@@ -38,13 +35,24 @@ $(document).ready(function(){
                   <hr/>
               {% endif %}
 
-            <div id='tweet-container' data-url='/api/tweet/'>
+            <div id='tweet-container' data-url='/api/search/'>
               
             </div>
             <a href='#' id='loadmore'>Load More Tweets</a>
 
-
           </div>
+
+          <div class='col-sm-3 col-xs-12' style="background-color: rgba(128, 18 ,77, 0.1); border-radius: 15px; color: white;">
+          <h3>Users</h3>
+            {% for user in users %}
+              <a style="color:white" href="/{{ user.username }}/">{{ user.username }}</a>
+              <br/>
+            {% empty %}
+            <p>No Users Found</p>   
+            {% endfor %}
+            <p></p>
+          </div>
+
       </div>
     </div>
 

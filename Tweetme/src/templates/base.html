@@ -140,7 +140,7 @@ function loadTweetContainer(tweetContainerID, fetchOneId){
     })
   })
   function updateHashLinks(){
-    $(".media-body").each(function(data){
+    $(".content").each(function(data){
         var hashtagRegex = /(^|\s)#([\w\d-]+)/g
         var usernameRegex = /(^|\s)@([\w\d-]+)/g
         var currentHtml = $(this).html()
@@ -358,7 +358,7 @@ function loadTweetContainer(tweetContainerID, fetchOneId){
     <script>
       $(document).ready(function(){
         var typingTimer;
-        var doneInterval = 800; // in ms
+        var doneInterval = 3200; // in ms
         var searchInput = $("#navbar-search-form input[type=text]")
         var searchQuery;
 
@@ -376,7 +376,7 @@ function loadTweetContainer(tweetContainerID, fetchOneId){
         function doneSearchTyping(){
           if (searchQuery){
             // do search
-            var url = '/tweet/search/?q=' + searchQuery
+            var url = '/search/?q=' + searchQuery
             document.location.href = url;
           }
         }
